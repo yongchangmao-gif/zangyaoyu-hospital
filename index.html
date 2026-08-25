@@ -98,6 +98,51 @@
   @media (max-width:760px){ .dgrid2{ grid-template-columns:1fr; } }
 
   footer{padding:44px 0 20px; font-size:11px; color:var(--ink-soft); line-height:1.8; border-top:1px solid var(--line); margin-top:40px;}
+
+  /* ---- 附录：交互测算器 ---- */
+  .sim-wrap{ margin-top:44px; }
+  .sim-note{ background:var(--accent-pale); border:1px solid var(--accent); border-radius:6px; padding:14px 18px; font-size:12.5px; color:var(--ink); line-height:1.7; margin-bottom:28px; }
+  .sim-note b{ color:var(--accent-deep); }
+  .sim-grid{ display:grid; grid-template-columns:1.3fr 1fr; gap:24px; align-items:start; }
+  .sim-groups{ display:flex; flex-direction:column; gap:8px; }
+  .sim-group{ background:var(--card); border:1px solid var(--line); border-radius:8px; padding:18px 20px; }
+  .sim-group-title{ font-size:13px; font-weight:700; color:var(--accent-deep); margin-bottom:12px; padding-bottom:8px; border-bottom:1px solid var(--line-soft); }
+  .sim-row{ margin-bottom:14px; }
+  .sim-row:last-child{ margin-bottom:0; }
+  .sim-row-head{ display:flex; justify-content:space-between; align-items:baseline; margin-bottom:6px; }
+  .sim-row-label{ font-size:12px; color:var(--ink); }
+  .sim-row-val{ font-family:var(--font-mono); font-size:13px; font-weight:700; color:var(--accent-deep); }
+  .sim-slider{
+    -webkit-appearance:none; appearance:none; width:100%; height:6px; border-radius:3px;
+    background:var(--line-soft); outline:none; cursor:pointer;
+  }
+  .sim-slider::-webkit-slider-thumb{
+    -webkit-appearance:none; appearance:none; width:17px; height:17px; border-radius:50%;
+    background:var(--accent-deep); border:2px solid #fff; box-shadow:0 1px 4px rgba(0,0,0,.25); cursor:pointer;
+  }
+  .sim-slider::-moz-range-thumb{
+    width:17px; height:17px; border-radius:50%; background:var(--accent-deep); border:2px solid #fff;
+    box-shadow:0 1px 4px rgba(0,0,0,.25); cursor:pointer;
+  }
+  .sim-results{ position:sticky; top:16px; background:var(--ink); color:#fff; border-radius:8px; padding:22px 24px; }
+  .sim-results-title{ font-family:var(--font-mono); font-size:12px; letter-spacing:.08em; text-transform:uppercase; opacity:.6; margin-bottom:4px; }
+  .sim-results-sub{ font-size:11px; opacity:.5; margin-bottom:18px; }
+  .sim-yr{ display:grid; grid-template-columns:32px 1fr 1fr; gap:10px; align-items:baseline; padding:9px 0; border-bottom:1px solid rgba(255,255,255,.12); font-size:12.5px; }
+  .sim-yr b{ font-family:var(--font-mono); opacity:.7; }
+  .sim-yr .rev{ font-family:var(--font-mono); }
+  .sim-yr .np{ font-family:var(--font-mono); font-weight:700; text-align:right; }
+  .sim-divider{ height:1px; background:rgba(255,255,255,.15); margin:14px 0; }
+  .sim-big{ display:flex; justify-content:space-between; align-items:baseline; padding:6px 0; }
+  .sim-big-label{ font-size:12px; opacity:.7; }
+  .sim-big-val{ font-family:var(--font-mono); font-size:22px; font-weight:800; }
+  .sim-big-val.warn{ color:#E0796B; }
+  .sim-reset{
+    margin-top:18px; width:100%; padding:9px; border-radius:6px; border:1px solid rgba(255,255,255,.25);
+    background:transparent; color:#fff; font-size:12px; font-weight:600; cursor:pointer; font-family:var(--font-body);
+  }
+  .sim-reset:hover{ background:rgba(255,255,255,.08); }
+  @media (max-width:800px){ .sim-grid{ grid-template-columns:1fr; } .sim-results{ position:static; } }
+  @media print{ .sim-wrap{ display:none; } }
   footer b{color:var(--ink);}
 
   @media (max-width:760px){
@@ -137,6 +182,16 @@
       </table>
       <p class="dnote">定价依据：对标青海10天全包约1万元，叠加区位溢价（免机票、免高原反应、免排队）；平均占床10天/疗程（实际治疗7天+入院体检/出院恢复）。</p>
 
+      <h4>开放床位与入住率（按121床登记总床位口径）</h4>
+      <table class="dtable">
+        <thead><tr><th>项目</th><th>Y1</th><th>Y2</th><th>Y3</th></tr></thead>
+        <tbody>
+          <tr><td>开放床位(张)</td><td class="mono">99</td><td class="mono">99</td><td class="mono">121</td></tr>
+          <tr><td>入住率(占121床登记总床位比例)</td><td class="mono">73.6%</td><td class="mono">81.8%</td><td class="mono">85.0%</td></tr>
+        </tbody>
+      </table>
+      <p class="dnote">Y1/Y2开放3-5层（3个病区，99床）；Y3增开6层（22床），全院121床全开。按当期实际开放床位口径，Y1/Y2入住率分别为90%/100%，Y3为85%；此处统一按121床总容量折算，便于跨年度对比。经营目标口径高于民营新院一般水平（20-45%），建议汇报时保留保守情景对照，并以预售验证支撑。</p>
+
       <h4>出院带药 & 门诊</h4>
       <table class="dtable">
         <tbody>
@@ -163,29 +218,29 @@
   <details class="expand" style="margin-bottom:32px; margin-top:0;">
     <summary>展开：完整三年损益链条与回收期测算过程 <span class="hint">— 营业收入到净利润的每一层，以及2.31年是怎么算出来的</span></summary>
     <div class="expand-body">
-      <h4>三年完整损益表（万元）</h4>
+      <h4>三年完整损益表（万元，括号内为占营业总收入比例）</h4>
       <table class="dtable">
         <thead><tr><th>科目</th><th>Y1</th><th>Y2</th><th>Y3</th></tr></thead>
         <tbody>
-          <tr><td>营业总收入</td><td class="mono">4,436.04</td><td class="mono">4,875.60</td><td class="mono">5,047.28</td></tr>
-          <tr><td>药材耗材（住院+带药）</td><td class="mono">474.72</td><td class="mono">527.47</td><td class="mono">548.07</td></tr>
-          <tr><td>门诊耗材</td><td class="mono">19.20</td><td class="mono">19.20</td><td class="mono">19.20</td></tr>
-          <tr><td>直接医护人力</td><td class="mono">485.00</td><td class="mono">497.00</td><td class="mono">558.00</td></tr>
-          <tr><td>能耗水电</td><td class="mono">221.80</td><td class="mono">243.78</td><td class="mono">252.36</td></tr>
-          <tr><td>医技检验影像外包</td><td class="mono">35.28</td><td class="mono">39.20</td><td class="mono">40.74</td></tr>
-          <tr><td>设备折旧</td><td class="mono">42.50</td><td class="mono">42.50</td><td class="mono">42.50</td></tr>
-          <tr class="subtotal"><td>营业成本合计</td><td class="mono">1,278.51</td><td class="mono">1,369.16</td><td class="mono">1,460.87</td></tr>
+          <tr><td>营业总收入</td><td class="mono">4,436.04 <span style="color:var(--ink-soft);">(100%)</span></td><td class="mono">4,875.60 <span style="color:var(--ink-soft);">(100%)</span></td><td class="mono">5,047.28 <span style="color:var(--ink-soft);">(100%)</span></td></tr>
+          <tr><td>药材耗材（住院+带药）</td><td class="mono">474.72 <span style="color:var(--ink-soft);">(10.7%)</span></td><td class="mono">527.47 <span style="color:var(--ink-soft);">(10.8%)</span></td><td class="mono">548.07 <span style="color:var(--ink-soft);">(10.9%)</span></td></tr>
+          <tr><td>门诊耗材</td><td class="mono">19.20 <span style="color:var(--ink-soft);">(0.4%)</span></td><td class="mono">19.20 <span style="color:var(--ink-soft);">(0.4%)</span></td><td class="mono">19.20 <span style="color:var(--ink-soft);">(0.4%)</span></td></tr>
+          <tr><td>直接医护人力</td><td class="mono">485.00 <span style="color:var(--ink-soft);">(10.9%)</span></td><td class="mono">497.00 <span style="color:var(--ink-soft);">(10.2%)</span></td><td class="mono">558.00 <span style="color:var(--ink-soft);">(11.1%)</span></td></tr>
+          <tr><td>能耗水电</td><td class="mono">221.80 <span style="color:var(--ink-soft);">(5.0%)</span></td><td class="mono">243.78 <span style="color:var(--ink-soft);">(5.0%)</span></td><td class="mono">252.36 <span style="color:var(--ink-soft);">(5.0%)</span></td></tr>
+          <tr><td>医技检验影像外包</td><td class="mono">35.28 <span style="color:var(--ink-soft);">(0.8%)</span></td><td class="mono">39.20 <span style="color:var(--ink-soft);">(0.8%)</span></td><td class="mono">40.74 <span style="color:var(--ink-soft);">(0.8%)</span></td></tr>
+          <tr><td>设备折旧</td><td class="mono">42.50 <span style="color:var(--ink-soft);">(1.0%)</span></td><td class="mono">42.50 <span style="color:var(--ink-soft);">(0.9%)</span></td><td class="mono">42.50 <span style="color:var(--ink-soft);">(0.8%)</span></td></tr>
+          <tr class="subtotal"><td>营业成本合计</td><td class="mono">1,278.51 <span style="color:var(--ink-soft);">(28.8%)</span></td><td class="mono">1,369.16 <span style="color:var(--ink-soft);">(28.1%)</span></td><td class="mono">1,460.87 <span style="color:var(--ink-soft);">(28.9%)</span></td></tr>
           <tr><td>毛利率（可比口径）</td><td class="mono">57.9%</td><td class="mono">59.8%</td><td class="mono">59.4%</td></tr>
-          <tr><td>租金物业</td><td class="mono">431.57</td><td class="mono">431.57</td><td class="mono">431.57</td></tr>
-          <tr><td>装修及其他摊销</td><td class="mono">199.17</td><td class="mono">199.17</td><td class="mono">199.17</td></tr>
-          <tr><td>销售费用（获客）</td><td class="mono">581.14</td><td class="mono">503.92</td><td class="mono">424.03</td></tr>
-          <tr><td>管理费用</td><td class="mono">259.91</td><td class="mono">261.07</td><td class="mono">265.48</td></tr>
-          <tr class="subtotal"><td>期间费用合计</td><td class="mono">1,531.79</td><td class="mono">1,455.73</td><td class="mono">1,380.25</td></tr>
-          <tr class="hl"><td>EBIT/税前利润</td><td class="mono">1,625.74</td><td class="mono">2,050.71</td><td class="mono">2,206.16</td></tr>
-          <tr><td>所得税（含亏损结转弥补）</td><td class="mono">308.16</td><td class="mono">512.68</td><td class="mono">551.54</td></tr>
-          <tr class="hl"><td>净利润</td><td class="mono">1,332.58</td><td class="mono">1,553.04</td><td class="mono">1,669.62</td></tr>
+          <tr><td>租金物业</td><td class="mono">431.57 <span style="color:var(--ink-soft);">(9.7%)</span></td><td class="mono">431.57 <span style="color:var(--ink-soft);">(8.9%)</span></td><td class="mono">431.57 <span style="color:var(--ink-soft);">(8.6%)</span></td></tr>
+          <tr><td>装修及其他摊销</td><td class="mono">179.17 <span style="color:var(--ink-soft);">(4.0%)</span></td><td class="mono">179.17 <span style="color:var(--ink-soft);">(3.7%)</span></td><td class="mono">179.17 <span style="color:var(--ink-soft);">(3.5%)</span></td></tr>
+          <tr><td>销售费用（获客）</td><td class="mono">581.14 <span style="color:var(--ink-soft);">(13.1%)</span></td><td class="mono">503.92 <span style="color:var(--ink-soft);">(10.3%)</span></td><td class="mono">424.03 <span style="color:var(--ink-soft);">(8.4%)</span></td></tr>
+          <tr><td>管理费用</td><td class="mono">259.91 <span style="color:var(--ink-soft);">(5.9%)</span></td><td class="mono">261.07 <span style="color:var(--ink-soft);">(5.4%)</span></td><td class="mono">265.48 <span style="color:var(--ink-soft);">(5.3%)</span></td></tr>
+          <tr class="subtotal"><td>期间费用合计</td><td class="mono">1,511.79 <span style="color:var(--ink-soft);">(34.1%)</span></td><td class="mono">1,435.73 <span style="color:var(--ink-soft);">(29.4%)</span></td><td class="mono">1,360.25 <span style="color:var(--ink-soft);">(27.0%)</span></td></tr>
+          <tr class="hl"><td>EBIT/税前利润</td><td class="mono">1,645.74 <span style="color:var(--ink-soft);">(37.1%)</span></td><td class="mono">2,070.71 <span style="color:var(--ink-soft);">(42.5%)</span></td><td class="mono">2,226.16 <span style="color:var(--ink-soft);">(44.1%)</span></td></tr>
+          <tr><td>所得税（含亏损结转弥补）</td><td class="mono">313.16 <span style="color:var(--ink-soft);">(7.1%)</span></td><td class="mono">517.68 <span style="color:var(--ink-soft);">(10.6%)</span></td><td class="mono">556.54 <span style="color:var(--ink-soft);">(11.0%)</span></td></tr>
+          <tr class="hl"><td>净利润</td><td class="mono">1,332.58 <span style="color:var(--ink-soft);">(30.0%)</span></td><td class="mono">1,553.04 <span style="color:var(--ink-soft);">(31.9%)</span></td><td class="mono">1,669.62 <span style="color:var(--ink-soft);">(33.1%)</span></td></tr>
           <tr><td>净利率</td><td class="mono">30.0%</td><td class="mono">31.9%</td><td class="mono">33.1%</td></tr>
-          <tr><td>经营现金流（净利+折旧摊销）</td><td class="mono">1,559.25</td><td class="mono">1,779.71</td><td class="mono">1,896.29</td></tr>
+          <tr><td>经营现金流（净利+折旧摊销）</td><td class="mono">1,554.25 <span style="color:var(--ink-soft);">(35.0%)</span></td><td class="mono">1,774.71 <span style="color:var(--ink-soft);">(36.4%)</span></td><td class="mono">1,891.29 <span style="color:var(--ink-soft);">(37.5%)</span></td></tr>
         </tbody>
       </table>
 
@@ -194,9 +249,9 @@
         <tbody>
           <tr><td>建设期（2026.7首笔设计费支付 → 2027.4保守口径开业）</td><td class="mono">0.75年（9个月）</td></tr>
           <tr><td>总投资</td><td class="mono">2,554.81万</td></tr>
-          <tr><td>Y1经营现金流（未覆盖总投资，缺口1,055.56万）</td><td class="mono">1,559.25万</td></tr>
-          <tr><td>Y2经营现金流1,779.71万 → 缺口1,055.56万所需比例</td><td class="mono">0.593年</td></tr>
-          <tr class="hl"><td>运营期回收 = 1 + 0.593</td><td class="mono">1.593年</td></tr>
+          <tr><td>Y1经营现金流（未覆盖总投资，缺口1,000.56万）</td><td class="mono">1,554.25万</td></tr>
+          <tr><td>Y2经营现金流1,774.71万 → 缺口1,000.56万所需比例</td><td class="mono">0.564年</td></tr>
+          <tr class="hl"><td>运营期回收 = 1 + 0.564</td><td class="mono">1.564年</td></tr>
           <tr class="hl"><td>全周期回收 = 建设期0.75 + 运营期1.564</td><td class="mono">2.314 ≈ 2.31年</td></tr>
         </tbody>
       </table>
@@ -350,6 +405,22 @@
         <p class="dnote">口径：人工181.5万+租赁130万两项合计311.5万，占393.10万的79%，是绝对主体；原口径为"140工资+100装修期租金+10水电"的粗估，2026.8.8拿到实际资金预算表后细化重编。数据来源：单店财务模型「假设参数」表第110-123行；《圣极(济南)医院项目预算表》2026.8.8资金预算表。</p>
       </div>
     </details>
+
+    <details class="expand">
+      <summary>展开：设备采购明细 <span class="hint">— 170万口径下的预计数量清单</span></summary>
+      <div class="expand-body">
+        <table class="dtable">
+          <thead><tr><th>设备</th><th>预计数量</th></tr></thead>
+          <tbody>
+            <tr><td>熏蒸舱</td><td class="mono">24台</td></tr>
+            <tr><td>病床</td><td class="mono">120张</td></tr>
+            <tr><td>电脑</td><td class="mono">20台</td></tr>
+            <tr><td>打印机</td><td class="mono">20台</td></tr>
+          </tbody>
+        </table>
+        <p class="dnote">口径：按8.8资金预算表170万打包口径的预计配置数量，非逐项单价核定；原"设备及配套明细"表237.2万口径（熏蒸舱130万+病床及配套107.2万，单价可溯源公开中标价）保留作为参考与追加上限。</p>
+      </div>
+    </details>
   </div>
 
   <div class="module">
@@ -474,11 +545,11 @@
           <thead><tr><th>科目</th><th>性质</th><th>Y1</th><th>Y2</th><th>Y3</th></tr></thead>
           <tbody>
             <tr><td>租金物业</td><td style="text-align:right;">固定</td><td class="mono">431.57</td><td class="mono">431.57</td><td class="mono">431.57</td></tr>
-            <tr><td>装修及其他摊销</td><td style="text-align:right;">固定</td><td class="mono">199.17</td><td class="mono">199.17</td><td class="mono">199.17</td></tr>
+            <tr><td>装修及其他摊销</td><td style="text-align:right;">固定</td><td class="mono">179.17</td><td class="mono">179.17</td><td class="mono">179.17</td></tr>
             <tr><td>设备折旧</td><td style="text-align:right;">固定</td><td class="mono">42.50</td><td class="mono">42.50</td><td class="mono">42.50</td></tr>
             <tr><td>管理费用</td><td style="text-align:right;">固定</td><td class="mono">259.91</td><td class="mono">261.07</td><td class="mono">265.48</td></tr>
             <tr><td>门诊耗材</td><td style="text-align:right;">固定</td><td class="mono">19.20</td><td class="mono">19.20</td><td class="mono">19.20</td></tr>
-            <tr class="subtotal"><td colspan="2">固定成本合计</td><td class="mono">952.35</td><td class="mono">953.51</td><td class="mono">957.92</td></tr>
+            <tr class="subtotal"><td colspan="2">固定成本合计</td><td class="mono">932.35</td><td class="mono">933.51</td><td class="mono">937.92</td></tr>
             <tr><td>药材耗材</td><td style="text-align:right;">变动</td><td class="mono">474.72</td><td class="mono">527.47</td><td class="mono">548.07</td></tr>
             <tr><td>直接医护人力</td><td style="text-align:right;">变动</td><td class="mono">485.00</td><td class="mono">497.00</td><td class="mono">558.00</td></tr>
             <tr><td>能耗水电</td><td style="text-align:right;">变动</td><td class="mono">221.80</td><td class="mono">243.78</td><td class="mono">252.36</td></tr>
@@ -587,9 +658,242 @@
     </div>
   </details>
 
+  <!-- ============ 附录：交互测算Demo ============ -->
+  <div class="sim-wrap">
+    <div class="module-title">附录：三年测算 Demo（可交互）</div>
+    <div class="sim-note"><b>说明：</b>本工具复刻了单店财务模型的核心收入/成本计算逻辑（疗程单价×床日周转、药材/能耗随收入联动、获客成本随复购摊薄等），拖动下方滑块可实时查看三年营收、净利润与回收期的变化。<b>这是简化demo，仅供内部探索性分析，不能替代完整Excel模型</b>（未包含税务口径、亏损结转弥补、人力编制明细等精确计算）。默认值=本报告基准情景。</div>
+
+    <div class="sim-grid">
+      <div class="sim-groups">
+
+        <div class="sim-group">
+          <div class="sim-group-title">一、疗程定价与结构</div>
+          <div class="sim-row"><div class="sim-row-head"><span class="sim-row-label">基础疗程价格</span><span class="sim-row-val" id="v-basePrice">12,000元</span></div><input type="range" class="sim-slider" id="basePrice" min="8000" max="20000" step="500" value="12000"></div>
+          <div class="sim-row"><div class="sim-row-head"><span class="sim-row-label">深度疗程价格</span><span class="sim-row-val" id="v-deepPrice">15,000元</span></div><input type="range" class="sim-slider" id="deepPrice" min="10000" max="25000" step="500" value="15000"></div>
+          <div class="sim-row"><div class="sim-row-head"><span class="sim-row-label">基础疗程占比（深度=1-此值）</span><span class="sim-row-val" id="v-basePct">60%</span></div><input type="range" class="sim-slider" id="basePct" min="0" max="100" step="5" value="60"></div>
+        </div>
+
+        <div class="sim-group">
+          <div class="sim-group-title">二、产能与入住率</div>
+          <div class="sim-row"><div class="sim-row-head"><span class="sim-row-label">Y1开放床位</span><span class="sim-row-val" id="v-bedsY1">99张</span></div><input type="range" class="sim-slider" id="bedsY1" min="30" max="121" step="1" value="99"></div>
+          <div class="sim-row"><div class="sim-row-head"><span class="sim-row-label">Y2开放床位</span><span class="sim-row-val" id="v-bedsY2">99张</span></div><input type="range" class="sim-slider" id="bedsY2" min="30" max="121" step="1" value="99"></div>
+          <div class="sim-row"><div class="sim-row-head"><span class="sim-row-label">Y3开放床位</span><span class="sim-row-val" id="v-bedsY3">121张</span></div><input type="range" class="sim-slider" id="bedsY3" min="30" max="121" step="1" value="121"></div>
+          <div class="sim-row"><div class="sim-row-head"><span class="sim-row-label">Y1入住率</span><span class="sim-row-val" id="v-occY1">90%</span></div><input type="range" class="sim-slider" id="occY1" min="30" max="100" step="1" value="90"></div>
+          <div class="sim-row"><div class="sim-row-head"><span class="sim-row-label">Y2入住率</span><span class="sim-row-val" id="v-occY2">100%</span></div><input type="range" class="sim-slider" id="occY2" min="30" max="100" step="1" value="100"></div>
+          <div class="sim-row"><div class="sim-row-head"><span class="sim-row-label">Y3入住率</span><span class="sim-row-val" id="v-occY3">85%</span></div><input type="range" class="sim-slider" id="occY3" min="30" max="100" step="1" value="85"></div>
+        </div>
+
+        <div class="sim-group">
+          <div class="sim-group-title">三、出院带药 & 门诊</div>
+          <div class="sim-row"><div class="sim-row-head"><span class="sim-row-label">出院带药转化率</span><span class="sim-row-val" id="v-drugRate">80%</span></div><input type="range" class="sim-slider" id="drugRate" min="0" max="100" step="5" value="80"></div>
+          <div class="sim-row"><div class="sim-row-head"><span class="sim-row-label">出院带药客单价</span><span class="sim-row-val" id="v-drugPrice">2,000元</span></div><input type="range" class="sim-slider" id="drugPrice" min="500" max="5000" step="100" value="2000"></div>
+          <div class="sim-row"><div class="sim-row-head"><span class="sim-row-label">门诊日均人次</span><span class="sim-row-val" id="v-clinicDaily">32人/天</span></div><input type="range" class="sim-slider" id="clinicDaily" min="0" max="100" step="1" value="32"></div>
+          <div class="sim-row"><div class="sim-row-head"><span class="sim-row-label">门诊客单价</span><span class="sim-row-val" id="v-clinicPrice">500元</span></div><input type="range" class="sim-slider" id="clinicPrice" min="100" max="1500" step="50" value="500"></div>
+        </div>
+
+        <div class="sim-group">
+          <div class="sim-group-title">四、成本假设</div>
+          <div class="sim-row"><div class="sim-row-head"><span class="sim-row-label">药材占住院+带药收入比</span><span class="sim-row-val" id="v-materialPct">12.0%</span></div><input type="range" class="sim-slider" id="materialPct" min="5" max="30" step="0.5" value="12"></div>
+          <div class="sim-row"><div class="sim-row-head"><span class="sim-row-label">门诊耗材占门诊收入比</span><span class="sim-row-val" id="v-clinicMaterialPct">4%</span></div><input type="range" class="sim-slider" id="clinicMaterialPct" min="0" max="20" step="1" value="4"></div>
+          <div class="sim-row"><div class="sim-row-head"><span class="sim-row-label">能耗水电占总收入比</span><span class="sim-row-val" id="v-energyPct">5.0%</span></div><input type="range" class="sim-slider" id="energyPct" min="1" max="15" step="0.5" value="5"></div>
+          <div class="sim-row"><div class="sim-row-head"><span class="sim-row-label">检验影像占住院收入比</span><span class="sim-row-val" id="v-examPct">1.0%</span></div><input type="range" class="sim-slider" id="examPct" min="0" max="5" step="0.5" value="1"></div>
+          <div class="sim-row"><div class="sim-row-head"><span class="sim-row-label">医护人力（万/床/年，近似）</span><span class="sim-row-val" id="v-laborPerBed">4.8万</span></div><input type="range" class="sim-slider" id="laborPerBed" min="2" max="10" step="0.1" value="4.8"></div>
+          <div class="sim-row"><div class="sim-row-head"><span class="sim-row-label">Y1获客成本</span><span class="sim-row-val" id="v-acqY1">2,000元/新客</span></div><input type="range" class="sim-slider" id="acqY1" min="500" max="5000" step="100" value="2000"></div>
+          <div class="sim-row"><div class="sim-row-head"><span class="sim-row-label">Y2获客成本</span><span class="sim-row-val" id="v-acqY2">1,700元/新客</span></div><input type="range" class="sim-slider" id="acqY2" min="500" max="5000" step="100" value="1700"></div>
+          <div class="sim-row"><div class="sim-row-head"><span class="sim-row-label">Y3获客成本</span><span class="sim-row-val" id="v-acqY3">1,500元/新客</span></div><input type="range" class="sim-slider" id="acqY3" min="500" max="5000" step="100" value="1500"></div>
+          <div class="sim-row"><div class="sim-row-head"><span class="sim-row-label">Y1老客占比（复购+转介绍）</span><span class="sim-row-val" id="v-returnY1">10%</span></div><input type="range" class="sim-slider" id="returnY1" min="0" max="50" step="5" value="10"></div>
+          <div class="sim-row"><div class="sim-row-head"><span class="sim-row-label">Y2老客占比</span><span class="sim-row-val" id="v-returnY2">20%</span></div><input type="range" class="sim-slider" id="returnY2" min="0" max="50" step="5" value="20"></div>
+          <div class="sim-row"><div class="sim-row-head"><span class="sim-row-label">Y3老客占比</span><span class="sim-row-val" id="v-returnY3">30%</span></div><input type="range" class="sim-slider" id="returnY3" min="0" max="50" step="5" value="30"></div>
+          <div class="sim-row"><div class="sim-row-head"><span class="sim-row-label">品牌与内容固定费用</span><span class="sim-row-val" id="v-brandFee">100万/年</span></div><input type="range" class="sim-slider" id="brandFee" min="0" max="300" step="10" value="100"></div>
+          <div class="sim-row"><div class="sim-row-head"><span class="sim-row-label">管理费用（统一口径）</span><span class="sim-row-val" id="v-mgmtFee">260万/年</span></div><input type="range" class="sim-slider" id="mgmtFee" min="100" max="500" step="10" value="260"></div>
+        </div>
+
+        <div class="sim-group">
+          <div class="sim-group-title">五、固定成本与投资</div>
+          <div class="sim-row"><div class="sim-row-head"><span class="sim-row-label">租金物业</span><span class="sim-row-val" id="v-rent">431.6万/年</span></div><input type="range" class="sim-slider" id="rent" min="200" max="800" step="10" value="431.57"></div>
+          <div class="sim-row"><div class="sim-row-head"><span class="sim-row-label">装修及其他摊销</span><span class="sim-row-val" id="v-amort">179.2万/年</span></div><input type="range" class="sim-slider" id="amort" min="50" max="400" step="10" value="179.17"></div>
+          <div class="sim-row"><div class="sim-row-head"><span class="sim-row-label">设备折旧</span><span class="sim-row-val" id="v-equipDep">42.5万/年</span></div><input type="range" class="sim-slider" id="equipDep" min="10" max="100" step="5" value="42.5"></div>
+          <div class="sim-row"><div class="sim-row-head"><span class="sim-row-label">所得税率</span><span class="sim-row-val" id="v-taxRate">25%</span></div><input type="range" class="sim-slider" id="taxRate" min="0" max="35" step="1" value="25"></div>
+          <div class="sim-row"><div class="sim-row-head"><span class="sim-row-label">总投资</span><span class="sim-row-val" id="v-totalInvest">2,554.81万</span></div><input type="range" class="sim-slider" id="totalInvest" min="1500" max="4000" step="50" value="2554.81"></div>
+          <div class="sim-row"><div class="sim-row-head"><span class="sim-row-label">建设期</span><span class="sim-row-val" id="v-buildPeriod">0.75年</span></div><input type="range" class="sim-slider" id="buildPeriod" min="0.25" max="2" step="0.05" value="0.75"></div>
+          <div class="sim-row"><div class="sim-row-head"><span class="sim-row-label">其他固定费用（保险/检测等）</span><span class="sim-row-val" id="v-otherFixed">60万/年</span></div><input type="range" class="sim-slider" id="otherFixed" min="0" max="150" step="5" value="60"></div>
+        </div>
+
+      </div>
+
+      <div class="sim-results">
+        <div class="sim-results-title">测算结果</div>
+        <div class="sim-results-sub">随左侧参数实时更新</div>
+
+        <div class="sim-yr"><b>Y1</b><span class="rev" id="r-rev1">4,436万</span><span class="np" id="r-np1">1,333万</span></div>
+        <div class="sim-yr"><b>Y2</b><span class="rev" id="r-rev2">4,876万</span><span class="np" id="r-np2">1,553万</span></div>
+        <div class="sim-yr"><b>Y3</b><span class="rev" id="r-rev3">5,047万</span><span class="np" id="r-np3">1,670万</span></div>
+
+        <div class="sim-divider"></div>
+
+        <div class="sim-big"><span class="sim-big-label">Y3净利率</span><span class="sim-big-val" id="r-margin3">33.1%</span></div>
+        <div class="sim-big"><span class="sim-big-label">全周期回收期</span><span class="sim-big-val" id="r-payback">2.31年</span></div>
+
+        <div class="sim-divider"></div>
+        <div style="font-size:11px; opacity:.55; line-height:1.6;">左列=营业收入，右列=净利润（万元）</div>
+
+        <button class="sim-reset" id="sim-reset-btn">重置为基准情景</button>
+      </div>
+    </div>
+  </div>
+
   <footer>
     数据来源：济南藏药浴医院单店财务模型 · 圣极（济南）医院投资运营预算工作簿 · 圣极（济南）医院项目预算表 · 装修深化会议纪要。
   </footer>
+
+  <script>
+  (function(){
+    var defaults = {
+      basePrice:12000, deepPrice:15000, basePct:60,
+      bedsY1:99, bedsY2:99, bedsY3:121, occY1:90, occY2:100, occY3:85,
+      drugRate:80, drugPrice:2000, clinicDaily:32, clinicPrice:500,
+      materialPct:12, clinicMaterialPct:4, energyPct:5, examPct:1, laborPerBed:4.8,
+      acqY1:2000, acqY2:1700, acqY3:1500, returnY1:10, returnY2:20, returnY3:30,
+      brandFee:100, mgmtFee:260,
+      rent:431.57, amort:179.17, equipDep:42.5, taxRate:25, totalInvest:2554.81, buildPeriod:0.75, otherFixed:60
+    };
+    var opDays = 300, stayDays = 10;
+    var ids = Object.keys(defaults);
+
+    function fmt(id, val){
+      switch(id){
+        case 'basePrice': case 'deepPrice': case 'drugPrice': case 'clinicPrice':
+          return Math.round(val).toLocaleString('en-US') + '元';
+        case 'acqY1': case 'acqY2': case 'acqY3':
+          return Math.round(val).toLocaleString('en-US') + '元/新客';
+        case 'basePct': case 'occY1': case 'occY2': case 'occY3': case 'drugRate':
+        case 'clinicMaterialPct': case 'returnY1': case 'returnY2': case 'returnY3': case 'taxRate':
+          return Math.round(val) + '%';
+        case 'materialPct': case 'energyPct': case 'examPct':
+          return val.toFixed(1) + '%';
+        case 'bedsY1': case 'bedsY2': case 'bedsY3':
+          return Math.round(val) + '张';
+        case 'clinicDaily':
+          return Math.round(val) + '人/天';
+        case 'laborPerBed':
+          return val.toFixed(1) + '万';
+        case 'brandFee': case 'mgmtFee':
+          return Math.round(val) + '万/年';
+        case 'rent': case 'amort': case 'otherFixed':
+          return val.toFixed(1) + '万/年';
+        case 'equipDep':
+          return val.toFixed(1) + '万/年';
+        case 'totalInvest':
+          return val.toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2}) + '万';
+        case 'buildPeriod':
+          return val.toFixed(2) + '年';
+        default: return val;
+      }
+    }
+
+    function getVals(){
+      var v = {};
+      ids.forEach(function(id){ v[id] = parseFloat(document.getElementById(id).value); });
+      return v;
+    }
+
+    function paintSlider(el){
+      var min = parseFloat(el.min), max = parseFloat(el.max), val = parseFloat(el.value);
+      var pct = (val - min) / (max - min) * 100;
+      el.style.background = 'linear-gradient(to right, var(--accent-deep) 0%, var(--accent-deep) ' + pct + '%, var(--line-soft) ' + pct + '%, var(--line-soft) 100%)';
+    }
+
+    function calcYear(v, i){
+      var beds = [v.bedsY1, v.bedsY2, v.bedsY3][i];
+      var occ = [v.occY1, v.occY2, v.occY3][i] / 100;
+      var acq = [v.acqY1, v.acqY2, v.acqY3][i];
+      var retPct = [v.returnY1, v.returnY2, v.returnY3][i] / 100;
+
+      var weightedPrice = v.basePrice * (v.basePct/100) + v.deepPrice * (1 - v.basePct/100);
+      var occupiedDays = beds * occ * opDays;
+      var courseCount = Math.round(occupiedDays / stayDays);
+      var inpatientRev = courseCount * weightedPrice / 10000;
+      var drugRev = courseCount * (v.drugRate/100) * v.drugPrice / 10000;
+      var clinicVisits = v.clinicDaily * opDays;
+      var clinicRev = clinicVisits * v.clinicPrice / 10000;
+      var totalRev = inpatientRev + drugRev + clinicRev;
+
+      var materialCost = (inpatientRev + drugRev) * (v.materialPct/100);
+      var clinicMaterialCost = clinicRev * (v.clinicMaterialPct/100);
+      var laborCost = beds * v.laborPerBed;
+      var energyCost = totalRev * (v.energyPct/100);
+      var examCost = inpatientRev * (v.examPct/100);
+      var opCost = materialCost + clinicMaterialCost + laborCost + energyCost + examCost + v.equipDep;
+
+      var grossProfit = totalRev - opCost;
+
+      var newCustomers = courseCount * (1 - retPct);
+      var salesCost = newCustomers * acq / 10000 + v.brandFee;
+      var periodCost = v.rent + v.amort + salesCost + v.mgmtFee + v.otherFixed;
+
+      var ebit = grossProfit - periodCost;
+      var y0Loss = 393.1; // 开业前费用形成的Y0亏损，固定值，仅在本demo中用于Y1所得税抵减模拟
+      var taxableBase = (i === 0) ? Math.max(0, ebit - y0Loss) : Math.max(0, ebit);
+      var tax = taxableBase * (v.taxRate/100);
+      var netProfit = ebit - tax;
+      var netMargin = totalRev > 0 ? netProfit / totalRev : 0;
+      var cashFlow = netProfit + v.equipDep + v.amort;
+
+      return {rev: totalRev, np: netProfit, margin: netMargin, cf: cashFlow};
+    }
+
+    function calculate(){
+      var v = getVals();
+      ids.forEach(function(id){
+        document.getElementById('v-'+id).textContent = fmt(id, v[id]);
+        paintSlider(document.getElementById(id));
+      });
+
+      var y = [calcYear(v,0), calcYear(v,1), calcYear(v,2)];
+
+      document.getElementById('r-rev1').textContent = Math.round(y[0].rev).toLocaleString('en-US') + '万';
+      document.getElementById('r-rev2').textContent = Math.round(y[1].rev).toLocaleString('en-US') + '万';
+      document.getElementById('r-rev3').textContent = Math.round(y[2].rev).toLocaleString('en-US') + '万';
+      document.getElementById('r-np1').textContent = Math.round(y[0].np).toLocaleString('en-US') + '万';
+      document.getElementById('r-np2').textContent = Math.round(y[1].np).toLocaleString('en-US') + '万';
+      document.getElementById('r-np3').textContent = Math.round(y[2].np).toLocaleString('en-US') + '万';
+      document.getElementById('r-margin3').textContent = (y[2].margin*100).toFixed(1) + '%';
+
+      // 回收期：建设期 + 运营期(现金流累计覆盖总投资所需年数)
+      var totalInvest = v.totalInvest;
+      var cum = 0, paybackYears = null;
+      for(var i=0;i<3;i++){
+        var prevCum = cum;
+        cum += y[i].cf;
+        if(cum >= totalInvest && paybackYears === null){
+          var frac = (totalInvest - prevCum) / y[i].cf;
+          paybackYears = i + frac;
+        }
+      }
+      var marginEl = document.getElementById('r-margin3');
+      var paybackEl = document.getElementById('r-payback');
+      if(paybackYears === null){
+        paybackEl.textContent = '超3年';
+        paybackEl.classList.add('warn');
+      } else {
+        paybackEl.textContent = (v.buildPeriod + paybackYears).toFixed(2) + '年';
+        paybackEl.classList.remove('warn');
+      }
+      if(y[2].margin < 0){ marginEl.classList.add('warn'); } else { marginEl.classList.remove('warn'); }
+    }
+
+    ids.forEach(function(id){
+      var el = document.getElementById(id);
+      el.addEventListener('input', calculate);
+    });
+    document.getElementById('sim-reset-btn').addEventListener('click', function(){
+      ids.forEach(function(id){ document.getElementById(id).value = defaults[id]; });
+      calculate();
+    });
+
+    calculate();
+  })();
+  </script>
 
 </div>
 </body>
